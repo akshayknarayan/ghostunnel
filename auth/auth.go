@@ -18,7 +18,7 @@ package auth
 
 import (
 	"crypto/x509"
-	"errors"
+	//"errors"
 	"net"
 	"net/url"
 
@@ -65,43 +65,44 @@ type ACL struct {
 // enforce access controls based on the given ACL. If the given ACL is empty,
 // no clients will be allowed (fails closed).
 func (a ACL) VerifyPeerCertificateServer(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error {
-	if len(verifiedChains) == 0 {
-		return errors.New("unauthorized: invalid principal, or principal not allowed")
-	}
+    return nil
+	//if len(verifiedChains) == 0 {
+	//	return errors.New("unauthorized: invalid principal, or principal not allowed")
+	//}
 
-	// If --allow-all has been set, a valid cert is sufficient to connect.
-	if a.AllowAll {
-		return nil
-	}
+	//// If --allow-all has been set, a valid cert is sufficient to connect.
+	//if a.AllowAll {
+	//	return nil
+	//}
 
-	cert := verifiedChains[0][0]
+	//cert := verifiedChains[0][0]
 
-	// Check CN against --allow-cn flag(s).
-	if contains(a.AllowedCNs, cert.Subject.CommonName) {
-		return nil
-	}
+	//// Check CN against --allow-cn flag(s).
+	//if contains(a.AllowedCNs, cert.Subject.CommonName) {
+	//	return nil
+	//}
 
-	// Check OUs against --allow-ou flag(s).
-	if intersects(a.AllowedOUs, cert.Subject.OrganizationalUnit) {
-		return nil
-	}
+	//// Check OUs against --allow-ou flag(s).
+	//if intersects(a.AllowedOUs, cert.Subject.OrganizationalUnit) {
+	//	return nil
+	//}
 
-	// Check DNS SANs against --allow-dns-san flag(s).
-	if intersects(a.AllowedDNSs, cert.DNSNames) {
-		return nil
-	}
+	//// Check DNS SANs against --allow-dns-san flag(s).
+	//if intersects(a.AllowedDNSs, cert.DNSNames) {
+	//	return nil
+	//}
 
-	// Check IP SANs against --allow-dns-san flag(s).
-	if intersectsIP(a.AllowedIPs, cert.IPAddresses) {
-		return nil
-	}
+	//// Check IP SANs against --allow-dns-san flag(s).
+	//if intersectsIP(a.AllowedIPs, cert.IPAddresses) {
+	//	return nil
+	//}
 
-	// Check URI SANs against --allow-uri-san flag(s).
-	if intersectsURI(a.AllowedURIs, cert.URIs) {
-		return nil
-	}
+	//// Check URI SANs against --allow-uri-san flag(s).
+	//if intersectsURI(a.AllowedURIs, cert.URIs) {
+	//	return nil
+	//}
 
-	return errors.New("unauthorized: invalid principal, or principal not allowed")
+	//return errors.New("unauthorized: invalid principal, or principal not allowed")
 }
 
 // VerifyPeerCertificateClient is an implementation of VerifyPeerCertificate
@@ -110,44 +111,46 @@ func (a ACL) VerifyPeerCertificateServer(rawCerts [][]byte, verifiedChains [][]*
 // all servers will be allowed (this function assumes that DNS name verification
 // has already taken place, and therefore fails open).
 func (a ACL) VerifyPeerCertificateClient(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error {
-	if len(verifiedChains) == 0 {
-		return errors.New("unauthorized: invalid principal, or principal not allowed")
-	}
+    return nil
 
-	// If the ACL is empty, only hostname verification is performed. The hostname
-	// verification happens in crypto/tls itself, so we can skip our checks here.
-	if len(a.AllowedCNs) == 0 && len(a.AllowedOUs) == 0 && len(a.AllowedDNSs) == 0 && len(a.AllowedURIs) == 0 && len(a.AllowedIPs) == 0 {
-		return nil
-	}
+	//if len(verifiedChains) == 0 {
+	//	return errors.New("unauthorized: invalid principal, or principal not allowed")
+	//}
 
-	cert := verifiedChains[0][0]
+	//// If the ACL is empty, only hostname verification is performed. The hostname
+	//// verification happens in crypto/tls itself, so we can skip our checks here.
+	//if len(a.AllowedCNs) == 0 && len(a.AllowedOUs) == 0 && len(a.AllowedDNSs) == 0 && len(a.AllowedURIs) == 0 && len(a.AllowedIPs) == 0 {
+	//	return nil
+	//}
 
-	// Check CN against --verify-cn flag(s).
-	if contains(a.AllowedCNs, cert.Subject.CommonName) {
-		return nil
-	}
+	//cert := verifiedChains[0][0]
 
-	// Check OUs against --verify-ou flag(s).
-	if intersects(a.AllowedOUs, cert.Subject.OrganizationalUnit) {
-		return nil
-	}
+	//// Check CN against --verify-cn flag(s).
+	//if contains(a.AllowedCNs, cert.Subject.CommonName) {
+	//	return nil
+	//}
 
-	// Check DNS SANs against --verify-dns-san flag(s).
-	if intersects(a.AllowedDNSs, cert.DNSNames) {
-		return nil
-	}
+	//// Check OUs against --verify-ou flag(s).
+	//if intersects(a.AllowedOUs, cert.Subject.OrganizationalUnit) {
+	//	return nil
+	//}
 
-	// Check IP SANs against --verify-dns-san flag(s).
-	if intersectsIP(a.AllowedIPs, cert.IPAddresses) {
-		return nil
-	}
+	//// Check DNS SANs against --verify-dns-san flag(s).
+	//if intersects(a.AllowedDNSs, cert.DNSNames) {
+	//	return nil
+	//}
 
-	// Check URI SANs against --verify-uri-san flag(s).
-	if intersectsURI(a.AllowedURIs, cert.URIs) {
-		return nil
-	}
+	//// Check IP SANs against --verify-dns-san flag(s).
+	//if intersectsIP(a.AllowedIPs, cert.IPAddresses) {
+	//	return nil
+	//}
 
-	return errors.New("unauthorized: invalid principal, or principal not allowed")
+	//// Check URI SANs against --verify-uri-san flag(s).
+	//if intersectsURI(a.AllowedURIs, cert.URIs) {
+	//	return nil
+	//}
+
+	//return errors.New("unauthorized: invalid principal, or principal not allowed")
 }
 
 // Returns true if item is contained in set.
