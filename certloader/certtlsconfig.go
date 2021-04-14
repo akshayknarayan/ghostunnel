@@ -1,7 +1,6 @@
 package certloader
 
 import (
-    "fmt"
 	"crypto/tls"
 	"errors"
 )
@@ -57,7 +56,6 @@ func (c *certTLSConfig) GetClientConfig() *tls.Config {
 	config.GetClientCertificate = c.cert.GetClientCertificate
 	config.RootCAs = c.cert.GetTrustStore()
 	config.InsecureSkipVerify = true
-    fmt.Println("setting client InsecureSkipVerify")
 	return config
 }
 
@@ -66,6 +64,5 @@ func (c *certTLSConfig) GetServerConfig() *tls.Config {
 	config.GetCertificate = c.cert.GetCertificate
 	config.ClientCAs = c.cert.GetTrustStore()
 	config.InsecureSkipVerify = true
-    fmt.Println("setting server InsecureSkipVerify")
 	return config
 }
